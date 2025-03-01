@@ -1,0 +1,12 @@
+Heritage_Platform/
+Heritage_Resources/
+Zen/
+
+webroot/logs/
+webroot/conf/magic
+webroot/conf/mime.types
+webroot/cgi-bin/
+webroot/htdocs/
+
+.devenv/
+.devenv.flake.nix
