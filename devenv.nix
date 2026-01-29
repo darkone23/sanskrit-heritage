@@ -3,6 +3,7 @@
 {
   # https://devenv.sh/basics/
   env.DEVENV_HTTPD_MODULES = "${pkgs.apacheHttpd}/modules";
+  env.OCAMLFLAGS = "-unsafe-string";
   
   # needs old ocaml for Camlp4
   # env.OCAML_TOPLEVEL_PATH = "${pkgs.ocaml-ng.ocamlPackages_4_07.utop}/lib/ocaml";
@@ -13,10 +14,12 @@
     pkgs.gosu
     pkgs.bash
     pkgs.apacheHttpd 
-  ] ++ (with pkgs.ocaml-ng.ocamlPackages_4_07; [
+  ] ++ (with pkgs.ocaml-ng.ocamlPackages_4_14; [
     ocaml
     camlp4
     findlib
+    # ocaml-config-unsafe-string
+    ocamlbuild
     # dune_3
     # utop
     # ocaml-lsp

@@ -1,50 +1,59 @@
 # sanskrit-heritage
 
-The tool by Gérard Huet and Pawan Goyal available at https://sanskrit.inria.fr/ from the [French Institute for Research in Computer Science and Automation](https://www.inria.fr/en) provides a rich collection of tools for analysis of the sanskrit language.
+The Sanskrit Heritage Platform by Gérard Huet and Pawan Goyal provides tools for Sanskrit language analysis - available at https://sanskrit.inria.fr/ from INRIA.
 
-However: it requires an outdated version of ocaml (4.0.7 circa 2018) and many now deprecated features to function.
+This project provides a devenv shell with nixpkgs to build and run the platform using OCaml 4.07 with Camlp4.
 
-Because of the challenges involved with running the service this project provides a 'devenv shell' leveraging nixpkgs for reproducing the build environment.
+## Directory Structure
 
-## installation and running apache server
+Clone all 4 repositories into this layout:
 
-The heritage project architecture depends on httpd running ocaml cgi-scripts over local xml datasets.
-
-httpd installations are requiring non-root users so we will first require a 'heritage' linux* user to run the platform.
-
-> * tested on x86 linux but may work in other environments as well
-
-prerequisites:
-- server with [nix](https://lix.systems/install/) and [devenv](https://devenv.sh/getting-started/) installed
-- a non root user that can successfully run `devenv shell`. see: [scripts/add-heritage-user.sh](scripts/add-heritage-user.sh)
-
-once you have the user we can begin, with a copy of this repository checked out to somewhere like `/var/lib/sanskrit-heritage`
-
-```bash
-# assuming you have bash on your system installed:
-sudo -u heritage -H bash --login 
-cd /var/lib/sanskrit-hertiage && devenv shell
-
-# ...
-# continue with setup process
+```
+sanskrit-heritage/
+├── Zen/                    # OCaml computational linguistics toolkit
+├── Heritage_Resources/     # Morphological data, dictionaries, transducers
+├── Heritage_Platform/      # Web interface and CGI services
+├── webroot/                # Apache document root
+└── conf/                   # Apache configuration
 ```
 
-## submodules
+## Setup Steps
 
-Repositories making up the heritage platform:
+1. Enter the devenv shell (provides OCaml 4.07, camlp4, apache):
+   ```bash
+   cd sanskrit-heritage
+   devenv shell
+   ```
 
-- Zen
-- Heritage_Resources
-- Heritage_Platform
+2. Configure Heritage_Platform with paths to Zen and Resources:
+   ```bash
+   cd Heritage_Platform
+   ./configure
+   ```
 
-Steps:
+3. Build and install:
+   ```bash
+   make && make install
+   ```
 
-- check all 3 repos out
-- create heritage platform config and symlink
-- ./configure && make && make install
-- run httpd over cgi/htdocs data
+4. Run the HTTP server:
+   ```bash
+   heritage-cgi  # Runs Apache httpd on port 4040
+   ```
 
-After completing above steps you should have a running heritage platform available at http://localhost:4040
+Access the platform at http://localhost:4040
 
-Next steps can include using tools like [caddy](https://caddyserver.com/docs/getting-started) for layering security and authorization.
+## Configuration Details
+
+The configure script reads `SETUP/config` which should point to:
+
+- `ZENDIR`: Path to Zen/ML (e.g., `../Zen/ML`)
+- `SKTRESOURCES`: Path to Heritage_Resources (e.g., `../Heritage_Resources`)
+- `SERVERPUBLICDIR`: Where web files are served from
+- `CGIDIR`: Where CGI executables are installed
+
+## Project Links
+
+- [Sanskrit Heritage INRIA](https://sanskrit.inria.fr/)
+- [Zen GitLab](https://gitlab.inria.fr/huet/Zen.git)
 
