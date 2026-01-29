@@ -25,6 +25,8 @@ sanskrit-heritage/
    devenv shell
    ```
 
+you also need to isntall the zen/ml tools before you can do the next step
+
 2. Configure Heritage_Platform with paths to Zen and Resources:
    ```bash
    cd Heritage_Platform
@@ -38,6 +40,7 @@ sanskrit-heritage/
 
 4. Run the HTTP server:
    ```bash
+   cp-httpd-conf
    heritage-cgi  # Runs Apache httpd on port 4040
    ```
 
@@ -51,6 +54,14 @@ The configure script reads `SETUP/config` which should point to:
 - `SKTRESOURCES`: Path to Heritage_Resources (e.g., `../Heritage_Resources`)
 - `SERVERPUBLICDIR`: Where web files are served from
 - `CGIDIR`: Where CGI executables are installed
+
+Want to check that everything works?
+
+```bash
+   curl -I http://localhost:4040/cgi-bin/sktreader
+   curl -I http://localhost:4040/skt/DICO/style.css
+
+```
 
 ## Project Links
 
